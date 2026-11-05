@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="EmployeeManagement"
+         default="package"
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <!-- Project directories -->
+    <property name="src.dir" value="src"/>
+    <property name="resources.dir" value="resources"/>
+    <property name="web.dir" value="WebContent"/>
+    <property name="lib.dir" value="lib"/>
+
+    <!-- Build directories -->
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="dist.dir" value="${build.dir}/dist"/>
+
+    <property name="war.name" value="EmployeeManagement.war"/>
+
+    <!-- Resolve external dependencies -->
+    <target name="resolve">
+    <ivy:retrieve
+        pattern="${lib.dir}/[organisation]-[module]-[revision]-[type](-[classifier]).[ext]"/>
+    </target>
+
+    <!-- Delete previous build output -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- Compile Java source code -->
+    <target name="compile" depends="resolve">
+
+        <mkdir dir="${classes.dir}"/>
+
+        <path id="compile.classpath">
+            <fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+
+        <javac
+            srcdir="${src.dir}"
+            destdir="${classes.dir}"
+            includeantruntime="false"
+            source="17"
+            target="17"
+            encoding="UTF-8">
+
+            <classpath refid="compile.classpath"/>
+
+        </javac>
+
+        <!-- Copy runtime configuration into the classpath -->
+        <copy todir="${classes.dir}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+
+    </target>
+
+    <!-- Package application into a WAR -->
+    <target name="package" depends="compile">
+
+        <mkdir dir="${dist.dir}"/>
+
+        <war
+            destfile="${dist.dir}/${war.name}"
+            webxml="${web.dir}/WEB-INF/web.xml">
+
+            <!-- JSP and other web files -->
+            <fileset dir="${web.dir}">
+                <exclude name="WEB-INF/web.xml"/>
+            </fileset>
+
+            <!-- Compiled Java classes and resources -->
+            <classes dir="${classes.dir}"/>
+
+            <!-- External dependencies -->
+            <lib dir="${lib.dir}">
+                <exclude name="servlet-api*.jar"/>
+                <exclude name="jakarta.persistence-api-*.jar"/>
+            </lib>
+
+        </war>
+
+    </target>
+
+</project>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivy-module version="2.0">
+
+    <info
+        organisation="com.example"
+        module="EmployeeManagement"/>
+
+    <dependencies>
+
+        <!-- Hibernate ORM -->
+        <dependency
+            org="org.hibernate.orm"
+            name="hibernate-core"
+            rev="6.6.59.Final"/>
+
+        <!-- Oracle JDBC Driver -->
+        <dependency
+            org="com.oracle.database.jdbc"
+            name="ojdbc11"
+            rev="23.26.4.0.0"/>
+
+        <!-- Jakarta Persistence API -->
+        <dependency
+            org="jakarta.persistence"
+            name="jakarta.persistence-api"
+            rev="3.1.0"/>
+            
+        <!-- Tomcat 9 Servlet API -->
+        <dependency 
+            org="javax.servlet"
+            name="javax.servlet-api"
+            rev="4.0.1"/>
+
+        <!-- JSTL 1.2 -->
+        <dependency 
+            org="javax.servlet"
+            name="jstl"
+            rev="1.2"/>
+
+    </dependencies>
+
+</ivy-module>
